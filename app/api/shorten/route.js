@@ -19,7 +19,7 @@ export async function POST(request) {
 
     // Build the full short URL using the request's own origin.
     // This way it works on localhost AND in production without config.
-    const origin = request.nextUrl.origin;
+    const origin = new URL(request.url).origin;
     const shortUrl = `${origin}/${code}`;
 
     return NextResponse.json({ shortUrl, code }, { status: 201 });

@@ -8,6 +8,7 @@ export default function ShortenForm() {
 
   // Result state: what the API returned
   const [shortUrl, setShortUrl] = useState('');
+  const [code, setCode] = useState('');
 
   // UI state: are we waiting for the API? Did something go wrong?
   const [error, setError] = useState('');
@@ -19,6 +20,7 @@ export default function ShortenForm() {
     // Reset previous result/error before a new attempt
     setError('');
     setShortUrl('');
+    setCode('');
     setLoading(true);
 
     try {
@@ -36,6 +38,7 @@ export default function ShortenForm() {
         setError(data.error || 'Something went wrong');
       } else {
         setShortUrl(data.shortUrl);
+        setCode(data.code);
       }
     } catch (err) {
       setError('Network error. Please try again.');
@@ -55,7 +58,7 @@ export default function ShortenForm() {
           onChange={(e) => setUrl(e.target.value)}
           placeholder='Paste a long URL here...'
           aria-label='URL to shorten'
-          className='border border-gray-300 rounded px-4 py-2'
+          className='border border-gray-300 rounded px-4 py-2 text-black placeholder:text-black'
           disabled={loading}
         />
         <button
@@ -82,7 +85,7 @@ export default function ShortenForm() {
             rel='noopener noreferrer'
             className='text-blue-600 font-mono break-all hover:underline'
           >
-            {shortUrl}
+            {code}
           </a>
         </div>
       )}
