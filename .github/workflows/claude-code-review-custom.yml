@@ -1,5 +1,9 @@
 name: Claude Code Review
 
+# ⚠️ REVIEW ONLY - No automatic changes to code
+# This workflow provides code review feedback via comments only.
+# All code modifications are made by the owner after reviewing suggestions.
+
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review, reopened]
@@ -8,6 +12,10 @@ jobs:
   claude-review:
     runs-on: ubuntu-latest
     permissions:
+      # ⚠️ IMPORTANT: Restricted permissions
+      # - contents: read = Claude can only READ code (NO write/commit access)
+      # - pull-requests: write = Claude can only POST comments (NO file modifications)
+      # This ensures no automatic changes are made to your codebase
       contents: read
       pull-requests: write
       issues: read
@@ -94,6 +102,8 @@ jobs:
 
             Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR.
 
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
-          # or https://docs.anthropic.com/en/docs/claude-code/sdk#command-line for available options
+          # ⚠️ ALLOWED TOOLS: Read-only + Comments only
+          # No tools that modify code, commit, or push are included.
+          # Claude can only: view code, search, list, and post comments.
+          # All decisions on changes are made by the repo owner.
           claude_args: '--model claude-opus-4-1-20250805 --allowed-tools "mcp__github_inline_comment__create_inline_comment,Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
